@@ -1,6 +1,10 @@
+import 'package:cayread/injection/flutter_injection.dart';
+import 'package:cayread/injection/injection.dart';
 import 'package:flutter/material.dart';
 
 void main() {
+  registerFlutterWrappers();
+  configureDependencies();
   runApp(const MyApp());
 }
 

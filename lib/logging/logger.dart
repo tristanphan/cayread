@@ -20,6 +20,13 @@ class Logger {
   void warn(String message) => _Worker.instance.log(_identifier, LogLevel.warn, message);
 
   void error(String message) => _Worker.instance.log(_identifier, LogLevel.error, message);
+
+  void assertThat(bool condition, {required String errorMessage}) {
+    if (!condition) {
+      error(errorMessage);
+      throw AssertionError(errorMessage);
+    }
+  }
 }
 
 /// An internal-use singleton used to manage log requests
@@ -75,7 +82,7 @@ class _Worker {
   /// Closes the current file sink (if not [initial]) and prepares a new file
   Future<void> _replaceLogFile({bool initial = false}) async {
     // Not synchronized, should be called from within a synchronized block
-    if (!initial) _logFileWriter.close();
+    if (!initial) await _logFileWriter.close();
     _logFileDate = DateTime.now().toUtc();
     _logFile = await _logFileProvider.getNewLogFile(_logFileDate);
     _logFileWriter = _logFile.openWrite(encoding: utf8, mode: FileMode.writeOnlyAppend);

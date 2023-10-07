@@ -5,7 +5,7 @@ import 'package:cayread/injection/injection.dart';
 import 'package:collection/collection.dart' as collection;
 import 'package:injectable/injectable.dart';
 
-@singleton
+@lazySingleton
 class LogFileProvider {
   // Dependencies
   final FileProvider fileProvider = serviceLocator();

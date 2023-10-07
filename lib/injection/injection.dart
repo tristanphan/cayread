@@ -1,4 +1,3 @@
-import 'package:archive/archive.dart';
 import 'package:cayread/injection/injection.config.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
@@ -15,7 +14,4 @@ void configureDependencies() {
 abstract class RegisterModule {
   @lazySingleton
   Uuid get uuid => const Uuid();
-
-  @lazySingleton
-  ZipDecoder get zipDecoder => ZipDecoder();
 }

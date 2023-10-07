@@ -16,6 +16,15 @@ class FileProvider {
   // stored here are user-generated, but those static files should still be kept here so that relative
   // paths are not broken by an external changes to the directory structure.
 
+  /// Returns the library directory, which stores all books
+  Future<Directory> getLibraryDirectory() async {
+    // $applicationDocuments/library/
+    Directory applicationDocumentsDirectory = await _pathProviderWrapper.getApplicationDocumentsDirectory();
+    Directory libraryDirectory = Directory("${applicationDocumentsDirectory.path}library$_separator");
+    await libraryDirectory.create(recursive: true);
+    return libraryDirectory;
+  }
+
   /// Returns the log directory, which stores all .log files created by the logger
   Future<Directory> getLogDirectory() async {
     // $applicationDocuments/logs/
@@ -23,5 +32,14 @@ class FileProvider {
     Directory logDirectory = Directory("${applicationDocumentsDirectory.path}log$_separator");
     await logDirectory.create(recursive: true);
     return logDirectory;
+  }
+
+  /// Returns the book directory of the book identified by [uuid], which is inside the library directory
+  Future<Directory> getBookDirectory(String uuid) async {
+    // $library/$uuid/
+    Directory libraryDirectory = await getLibraryDirectory();
+    Directory bookDir = Directory("${libraryDirectory.path}$uuid$_separator");
+    await bookDir.create(recursive: true);
+    return bookDir;
   }
 }

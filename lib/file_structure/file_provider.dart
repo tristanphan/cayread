@@ -42,4 +42,9 @@ class FileProvider {
     await bookDir.create(recursive: true);
     return bookDir;
   }
+
+  /// Returns the cover image of the book identified by [uuid], which is inside the book directory
+  Future<File> getBookCoverImageFile(String uuid) async {
+    return File("${(await getBookDirectory(uuid)).path}cover.png");
+  }
 }

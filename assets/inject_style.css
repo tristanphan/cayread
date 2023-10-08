@@ -1,0 +1,110 @@
+@import url('https://fonts.googleapis.com/css?family=Libre+Baskerville&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Bitter&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans+JP&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans+TC&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans+SC&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Noto+Serif+JP&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Noto+Serif+TC&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Noto+Serif+SC&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Noto+Serif+KR&display=swap');
+
+:root {
+    /* no spaces to simplify URI encoding */
+    --ereader-fonts: "Libre Baskerville","Roboto","Noto Sans JP","Noto Sans TC","Noto Sans SC","Noto Sans KR",sans-serif,sans-serif;
+
+    --ereader-scale: 100%;
+    --ereader-line-height: 1.61803398875em;
+
+    --ereader-background-color: #FFFFFF; /* brown is 332B2D */
+    --ereader-foreground-color: #000000;
+
+    /* TERMINOLOGY */
+    /* MAIN AXIS: the direction text flows first */
+    /* CROSS AXIS: the direction text flows after a line break */
+
+    /* Do NOT include units, but treat them as percentage of screen (x2) */
+    --ereader-main-padding: 8;
+    --ereader-cross-padding: 10;
+
+    /* NOTE: properties that start with "--ereader-prop" are dependent on other properties and should not changed */
+}
+
+:root:not([ereader__is_vertical]) {
+    --ereader-prop-padding: calc(var(--ereader-cross-padding) * 1vh) 0; /* vertical, then horizontal */
+
+    --ereader-prop-width: calc(100% - 2vw * var(--ereader-main-padding));
+    --ereader-prop-height: null;
+
+    --ereader-prop-img-width: 100%;
+    --ereader-prop-img-height: calc(100vh - 2vh * var(--ereader-main-padding));
+
+    --ereader-main-size: 100vw;
+}
+
+:root[ereader__is_vertical] {
+    --ereader-prop-padding: 0 calc(var(--ereader-cross-padding) * 1vw); /* vertical, then horizontal */
+
+    --ereader-prop-width: null;
+    --ereader-prop-height: calc(100% - 2vh * var(--ereader-main-padding));
+
+    --ereader-prop-img-width: calc(100vw - 2vw * var(--ereader-main-padding));
+    --ereader-prop-img-height: 100%;
+
+    --ereader-main-size: 100vh;
+}
+
+html {
+    /* set up the pagination format */
+    column-count: 1 !important;
+    column-gap: 0 !important;
+    column-width: var(--ereader-main-size) !important; /* required for safari */
+    touch-action: none !important; /* prevents touchscreen dragging */
+    width: 100vw !important;
+
+    /* keeps the padding within bounds */
+    height: 100vh !important;
+    box-sizing: border-box !important;
+    padding: var(--ereader-prop-padding) !important; /* vertical padding */
+    margin: 0 !important;
+}
+
+body {
+    width: var(--ereader-prop-width) !important; /* padding on horizontal scroll */
+    height: var(--ereader-prop-height) !important; /* padding on vertical scroll */
+    margin: auto auto !important;
+    zoom: var(--ereader-scale) !important;
+    /*
+    >> break-before: column;
+    creates page break between content
+    NOTE: also causes fill issues*! see get_chapter_html() for a possible fix
+    when implementing this in an app, just keep the html separate tbh
+    */
+}
+
+h1, h2, h3, h4, h5, h6, img {
+    break-inside: avoid !important;
+    max-height: var(--ereader-prop-img-height) !important;
+    max-width: var(--ereader-prop-img-width) !important;
+    object-fit: contain !important; /* keep aspect ratio + keep in frame */
+}
+
+/* LINK COLOR */
+a, a:hover, a:visited, a:active {
+    color: inherit;
+}
+
+/* TEXT FONTS */
+* {
+    font-family: var(--ereader-fonts) !important;
+    text-align: justify !important;
+    line-height: var(--ereader-line-height) !important;
+    word-wrap: break-word !important;
+}
+
+/* theming */
+:root {
+    background-color: var(--ereader-background-color) !important;
+    color: var(--ereader-foreground-color) !important;
+}

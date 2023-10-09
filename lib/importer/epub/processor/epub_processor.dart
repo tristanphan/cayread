@@ -22,7 +22,7 @@ class EpubProcessor {
   final EpubInjector _injector = serviceLocator();
   final FileProvider _fileProvider = serviceLocator();
 
-  /// Identifies the cover image, converts it, and copies it to the book directory
+  /// Identifies the cover image of the [book], converts it, and copies it to the book directory
   Future<void> processCoverImage(EpubBook book) async {
     // This parent file path prefix is necessary since the hrefs in the manifest are relative to the package document
     String manifestItemParent = File(book.containerContents.packageDocumentPath).parent.path;

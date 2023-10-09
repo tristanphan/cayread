@@ -37,6 +37,7 @@ class EpubParser {
     );
   }
 
+  /// Parse the container.xml file to find the package document path and type
   Future<ContainerContents> _parseContainer() async {
     // Setup
     final File containerFile = await _epubFileManager.getContainerFile(bookId);
@@ -65,6 +66,7 @@ class EpubParser {
     return contents;
   }
 
+  /// Parse the package document (e.g. container.opf) to find the metadata, manifest, and spine information
   Future<PackageDocumentContents> _parsePackageDocument(String packageDocumentPath) async {
     // Setup
     final File packageFile = File(packageDocumentPath);
@@ -91,6 +93,7 @@ class EpubParser {
     return contents;
   }
 
+  /// Parse the package document (e.g. container.opf) to find the metadata, such as the title and creators
   Future<PackageDocumentContentsMetadata> _parsePackageDocumentMetadata(XmlDocument xmlDocument) async {
     // Parsing
     String? title = xmlDocument
@@ -120,6 +123,7 @@ class EpubParser {
     return metadata;
   }
 
+  /// Parse the package document (e.g. container.opf) to find the manifest items, their locations, and their properties
   Future<PackageDocumentContentsManifest> _parsePackageDocumentManifest(XmlDocument xmlDocument) async {
     // Parsing
     Iterable<XmlElement> itemElements =
@@ -155,6 +159,7 @@ class EpubParser {
     return manifest;
   }
 
+  /// Parse the package document (e.g. container.opf) to find the spine, which is the order of the book's contents
   Future<PackageDocumentContentsSpine> _parsePackageDocumentSpine(XmlDocument xmlDocument) async {
     // Parsing
     String pageProgressionDirection = xmlDocument

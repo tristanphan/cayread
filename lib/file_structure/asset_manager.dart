@@ -10,8 +10,8 @@ import 'package:injectable/injectable.dart';
 class AssetManager {
   // Dependencies
   final Logger log = Logger.forType(AssetManager);
-  final PathProviderWrapper pathProviderWrapper = serviceLocator();
-  final RootBundle rootBundle = serviceLocator();
+  final IPathProviderWrapper pathProviderWrapper = serviceLocator();
+  final IRootBundle rootBundle = serviceLocator();
 
   String get separator => Platform.pathSeparator;
 
@@ -41,7 +41,6 @@ enum Asset {
 
   // The path is relative from the assets/ directory
   final String path;
-
   final String assetName;
 
   const Asset({

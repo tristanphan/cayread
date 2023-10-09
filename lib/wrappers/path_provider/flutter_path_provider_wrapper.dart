@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:cayread/wrappers/path_provider/path_provider_wrapper.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 
-class FlutterPathProviderWrapper extends PathProviderWrapper {
+class FlutterPathProviderWrapper extends IPathProviderWrapper {
   @override
   Future<Directory> getApplicationCacheDirectory() async {
     return _withSeparator(await path_provider.getApplicationCacheDirectory())!;

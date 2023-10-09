@@ -8,7 +8,7 @@ import 'package:injectable/injectable.dart';
 @lazySingleton
 class FileProvider {
   // Dependencies
-  final PathProviderWrapper _pathProviderWrapper = serviceLocator();
+  final IPathProviderWrapper _pathProviderWrapper = serviceLocator();
 
   String get _separator => Platform.pathSeparator;
 
@@ -45,6 +45,7 @@ class FileProvider {
 
   /// Returns the cover image of the book identified by [uuid], which is inside the book directory
   Future<File> getBookCoverImageFile(String uuid) async {
+    // $library/$uuid/cover.png
     return File("${(await getBookDirectory(uuid)).path}cover.png");
   }
 }

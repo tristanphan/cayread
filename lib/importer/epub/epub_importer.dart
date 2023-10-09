@@ -20,7 +20,7 @@ class EpubImporter {
   final EpubFileProvider _epubFileProvider = serviceLocator();
   final EpubProcessor _epubProcessor = serviceLocator();
 
-  // Extracts EPUB file into a temp directory, processes it, then moves it to the library
+  /// Extracts [sourceFile] (EPUB file) into a temp directory, processes it, then moves it to the library
   Future<void> import(File sourceFile) async {
     _log.assertThat(await sourceFile.exists(), errorMessage: "Source file does not exist: ${sourceFile.absolute.path}");
     _log.info("Importing epub file: ${sourceFile.absolute.path}");

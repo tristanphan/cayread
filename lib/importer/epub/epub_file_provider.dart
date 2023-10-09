@@ -14,40 +14,47 @@ class EpubFileProvider {
 
   String get separator => Platform.pathSeparator;
 
-  // .../$uuid/to_extract.zip
+  /// Returns the path to the pre-extracted EPUB file as a ZIP file of the book under [uuid]
+  /// This file should be deleted after extracting
   Future<String> getZipFilePath(String uuid) async {
+    // .../$uuid/to_extract.zip
     Directory bookDir = await fileProvider.getBookDirectory(uuid);
     String zipPath = "${bookDir.path}to_extract.zip";
     log.info("Zip path: $zipPath");
     return zipPath;
   }
 
-  // .../$uuid/original.epub
+  /// Returns the path to the EPUB file of the book under [uuid]
+  /// This file is kept in case the user wants it back, or in case we need to recreate the book
   Future<String> getOriginalEpubFilePath(String uuid) async {
+    // .../$uuid/original.epub
     Directory bookDir = await fileProvider.getBookDirectory(uuid);
     String epubPath = "${bookDir.path}original.epub";
     log.info("Epub path: $epubPath");
     return epubPath;
   }
 
-  // .../$uuid/contents/
+  /// Returns the path to the directory containing the extracted EPUB contents of the book under [uuid]
   Future<Directory> getContentDirectory(String uuid) async {
+    // .../$uuid/contents/
     Directory bookDir = await fileProvider.getBookDirectory(uuid);
     Directory contentDir = Directory("${bookDir.path}contents$separator");
     log.info("Contents directory: ${contentDir.path}");
     return contentDir;
   }
 
-  // .../$uuid/contents/META-INF/container.xml
+  /// Returns the path to the container.xml file of the book under [uuid]
   Future<File> getContainerFile(String uuid) async {
+    // .../$uuid/contents/META-INF/container.xml
     Directory contentDir = await getContentDirectory(uuid);
     File containerPath = File("${contentDir.path}META-INF${separator}container.xml");
     log.info("Container file path: $containerPath");
     return containerPath;
   }
 
-  // .../$uuid/index.html
+  /// Returns the path to the index.html file of the book under [uuid]
   Future<File> getIndexFile(String uuid) async {
+    // .../$uuid/index.html
     Directory bookDir = await fileProvider.getBookDirectory(uuid);
     File indexFile = File("${bookDir.path}index.html");
     log.info("Index file: ${indexFile.path}");

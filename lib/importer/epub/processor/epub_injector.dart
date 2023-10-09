@@ -19,7 +19,8 @@ class EpubInjector {
   final EpubFileProvider epubFileProvider = serviceLocator();
   final FileProvider fileProvider = serviceLocator();
 
-  // Returns the next location number to be used on subsequent calls
+  /// Adds location number attributes to the body of the [document], starting from the [startLocation]
+  /// Returns the next location number to be used on subsequent calls
   int injectLocationNumbering(XmlDocument document, int startLocation) {
     log.info("Injecting location numbering");
     int nextLocation = startLocation;
@@ -39,7 +40,7 @@ class EpubInjector {
     return nextLocation;
   }
 
-  // Add injection script to the beginning of the head
+  /// Add injection script to the beginning of the head of the [document]
   Future<void> injectScript(XmlDocument document, File file) async {
     log.info("Injecting script");
     String relativeScriptPath = path_lib.relative(
@@ -53,7 +54,7 @@ class EpubInjector {
     getHeadElement(document).children.insert(0, scriptElement);
   }
 
-  // Add injection stylesheet to the end of the head
+  /// Add injection stylesheet to the beginning of the head of the [document]
   Future<void> injectStyle(XmlDocument document, File file) async {
     log.info("Injecting style");
     String relativeStylePath = path_lib.relative(
@@ -68,6 +69,7 @@ class EpubInjector {
     getHeadElement(document).children.insert(0, scriptElement);
   }
 
+  /// Inject the path to the previous and next file stylesheet to the [document]
   void injectPreviousAndNext(XmlDocument document, File current, File? previous, File? next) {
     if (previous != null) {
       log.info("Injecting previous");
@@ -81,18 +83,21 @@ class EpubInjector {
     }
   }
 
+  /// Inject the path to the index file stylesheet to the [document]
   Future<void> injectIndex(XmlDocument document, File current, EpubBook book) async {
     File indexFile = await epubFileProvider.getIndexFile(book.id);
     String relativeIndexFile = path_lib.relative(indexFile.path, from: current.parent.absolute.path);
     document.rootElement.attributes.add(XmlAttribute(XmlName("data-ereader__index"), relativeIndexFile));
   }
 
+  /// Returns the <body> element of the [document]
   XmlElement getBodyElement(XmlDocument document) {
     XmlElement? bodyElement = document.rootElement.xpath("/html/body").whereType<XmlElement>().firstOrNull;
     log.assertThat(bodyElement != null, errorMessage: "Could not find body element");
     return bodyElement!;
   }
 
+  /// Returns the <head> element of the [document]
   XmlElement getHeadElement(XmlDocument document) {
     XmlElement? headElement = document.rootElement.xpath("/html/head").whereType<XmlElement>().firstOrNull;
     log.assertThat(headElement != null, errorMessage: "Could not find head element");

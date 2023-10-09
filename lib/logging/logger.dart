@@ -21,6 +21,7 @@ class Logger {
 
   void error(String message) => _Worker.instance.log(_identifier, LogLevel.error, message);
 
+  /// If the [condition] is false, throws an [AssertionError] with the [errorMessage]
   void assertThat(bool condition, {required String errorMessage}) {
     if (!condition) {
       error(errorMessage);

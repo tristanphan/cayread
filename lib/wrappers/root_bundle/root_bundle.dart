@@ -1,5 +1,5 @@
-/// Wrapper for the path_provider module, useful for dependency injection and mocking
+/// Wrapper for the root_bundle module, useful for dependency injection and mocking
 /// Abstractness is to separate behavior from dependency on Flutter
-abstract class RootBundle {
+abstract class IRootBundle {
   Future<String> loadString(String assetName, {bool cache = true});
 }

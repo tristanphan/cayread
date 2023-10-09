@@ -10,8 +10,9 @@ void configureDependencies() {
   serviceLocator.init();
 }
 
+/// Third-party dependencies can be registered here
 @module
-abstract class RegisterModule {
+abstract class ThirdPartyDependenciesModule {
   @lazySingleton
   Uuid get uuid => const Uuid();
 }

@@ -7,7 +7,7 @@ import 'dart:io';
 
 // @lazySingleton ~ Proper implementation should be registered separately
 // depending on the runner since it may have dependencies on Flutter
-abstract class PathProviderWrapper {
+abstract class IPathProviderWrapper {
   Future<Directory> getApplicationCacheDirectory();
 
   Future<Directory> getApplicationDocumentsDirectory();

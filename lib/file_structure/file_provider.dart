@@ -25,6 +25,15 @@ class FileProvider {
     return libraryDirectory;
   }
 
+  /// Returns the directory to the catalog.db file, which stores the book catalog
+  Future<File> getCatalogFile() async {
+    // $applicationDocuments/catalog.db
+    Directory applicationDocumentsDirectory = await _pathProviderWrapper.getApplicationDocumentsDirectory();
+    File catalogFile = File("${applicationDocumentsDirectory.path}catalog.db");
+    await catalogFile.create(recursive: true);
+    return catalogFile;
+  }
+
   /// Returns the log directory, which stores all .log files created by the logger
   Future<Directory> getLogDirectory() async {
     // $applicationDocuments/logs/

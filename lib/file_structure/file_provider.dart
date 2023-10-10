@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cayread/book_structures.dart';
 import 'package:cayread/injection/injection.dart';
 import 'package:cayread/wrappers/path_provider/path_provider_wrapper.dart';
 import 'package:injectable/injectable.dart';
@@ -50,6 +51,20 @@ class FileProvider {
     Directory bookDir = Directory("${libraryDirectory.path}$uuid$_separator");
     await bookDir.create(recursive: true);
     return bookDir;
+  }
+
+  /// Returns the path to the file of the book under [uuid]
+  /// This file is kept in case the user wants it back, or in case we need to recreate the book
+  Future<File> getOriginalFilePath(String uuid, BookType type) async {
+    Directory bookDir = await getBookDirectory(uuid);
+
+    switch (type) {
+      case BookType.epub:
+        // .../$uuid/original.epub
+        return File("${bookDir.path}original.epub");
+      default:
+        throw UnimplementedError("Book type $type not implemented");
+    }
   }
 
   /// Returns the cover image of the book identified by [uuid], which is inside the book directory

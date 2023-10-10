@@ -29,4 +29,8 @@ class ImporterUtils {
   static final Map<String, IImporter Function()> _mimeTypes = {
     "application/epub+zip": () => serviceLocator<EpubImporter>(),
   };
+
+  static const List<String> supportedExtensions = [
+    "epub",
+  ];
 }

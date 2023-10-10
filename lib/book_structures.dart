@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 class Book {
   String uuid;
@@ -39,6 +40,21 @@ class Book {
 
   @override
   String toString() => "${(Book).toString()}${jsonEncode(toMap())}";
+}
+
+// An extension of [Book] that supports [coverImage]
+class DisplayableBook extends Book {
+  File coverImage;
+
+  DisplayableBook({required Book book, required this.coverImage})
+      : super(
+          uuid: book.uuid,
+          title: book.title,
+          authors: book.authors,
+          type: book.type,
+          length: book.length,
+          current: book.current,
+        );
 }
 
 enum BookType {

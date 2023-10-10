@@ -1,5 +1,6 @@
 import 'package:cayread/book_structures.dart';
-import 'package:cayread/pages/library/library_actions.dart';
+import 'package:cayread/pages/library/book_entry/book_entry_widget.dart';
+import 'package:cayread/pages/library/library_page_actions.dart';
 import 'package:flutter/material.dart';
 
 class BookListWidget extends StatelessWidget {
@@ -14,6 +15,7 @@ class BookListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (books.isEmpty) return const _BookListEmptyWidget();
     return ListView.builder(
       physics: const NeverScrollableScrollPhysics(),
       scrollDirection: Axis.vertical,
@@ -21,17 +23,20 @@ class BookListWidget extends StatelessWidget {
       itemCount: books.length,
       itemBuilder: (BuildContext context, int index) {
         DisplayableBook displayableBook = books[index];
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("Title: ${displayableBook.title}"),
-            Text("Authors: ${displayableBook.authors.join("; ")}"),
-            const Padding(
-              padding: EdgeInsets.only(bottom: 16),
-            ),
-          ],
+        return BookEntryWidget(
+          displayableBook: displayableBook,
+          libraryPageActions: libraryPageActions,
         );
       },
     );
+  }
+}
+
+class _BookListEmptyWidget extends StatelessWidget {
+  const _BookListEmptyWidget();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Text("No books yet");
   }
 }

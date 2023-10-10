@@ -1,6 +1,6 @@
 import 'package:cayread/book_structures.dart';
 import 'package:cayread/pages/library/book_list_widget.dart';
-import 'package:cayread/pages/library/library_actions.dart';
+import 'package:cayread/pages/library/library_page_actions.dart';
 import 'package:cayread/pages/library/library_search_bar_widget.dart';
 import 'package:colorful_safe_area/colorful_safe_area.dart';
 import 'package:flutter/material.dart';

@@ -28,15 +28,15 @@ class LibraryPageActions {
 
   LibraryPageActions({
     required BuildContext context,
-    required void Function(void Function()) setState,
-    required void Function() refreshLibrary,
-    required void Function() incrementLoading,
-    required void Function() decrementLoading,
-  })  : _decrementLoading = decrementLoading,
-        _incrementLoading = incrementLoading,
-        _refreshLibrary = refreshLibrary,
+    required Function(void Function()) setState,
+    required Function() refreshLibrary,
+    required Function() incrementLoading,
+    required Function() decrementLoading,
+  })  : _context = context,
         _setState = setState,
-        _context = context;
+        _incrementLoading = _wrap(incrementLoading),
+        _decrementLoading = _wrap(decrementLoading),
+        _refreshLibrary = _wrap(refreshLibrary);
 
   /// Returns a future list of [DisplayableBook]
   Future<List<DisplayableBook>> getDisplayableBooks() async {
@@ -114,4 +114,12 @@ class LibraryPageActions {
     String? path = selectedFile?.files.firstOrNull?.path;
     return path == null ? null : File(path);
   }
+}
+
+/// Wraps the [function] such that it will return nothing
+/// This is necessary since [_setState] should accept a void function
+void Function() _wrap(Function() function) {
+  return () {
+    function();
+  };
 }

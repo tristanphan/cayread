@@ -22,7 +22,7 @@ class LibraryPageActions {
 
   // Callbacks
   final void Function(VoidCallback) _setState;
-  final void Function() _refreshLibrary;
+  final void Function() refreshLibrary;
   final void Function() _incrementLoading;
   final void Function() _decrementLoading;
 
@@ -36,15 +36,15 @@ class LibraryPageActions {
         _setState = setState,
         _incrementLoading = _wrap(incrementLoading),
         _decrementLoading = _wrap(decrementLoading),
-        _refreshLibrary = _wrap(refreshLibrary);
+        refreshLibrary = _wrap(refreshLibrary);
 
-  /// Returns a future list of [DisplayableBook]
-  Future<List<DisplayableBook>> getDisplayableBooks() async {
+  /// Returns a future list of [DisplayableBook] from the given [booksFuture]
+  Future<List<DisplayableBook>> getDisplayableBooks(Future<List<Book>> booksFuture) async {
     // Set loading status
     _setState(_incrementLoading);
 
     // Get list of books and their image file paths
-    List<Book> books = await _catalogManager.getBooks();
+    List<Book> books = await booksFuture;
     Iterable<Future<DisplayableBook>> displayableBooksFuture = books.map((Book book) async {
       File coverImage = await _fileProvider.getBookCoverImageFile(book.uuid);
       return DisplayableBook(book: book, coverImage: coverImage);
@@ -67,7 +67,7 @@ class LibraryPageActions {
     if (file != null) {
       bool success = await _catalogManager.importBook(file);
       if (success) {
-        _refreshLibrary();
+        refreshLibrary();
       } else {
         SnackBar snackBar = SnackBar(
           content: const Text("Failed to importing the book."),
@@ -87,7 +87,7 @@ class LibraryPageActions {
   /// Deletes the book with the [uuid] and refreshes the catalog
   Future<void> removeBookAction(String uuid) async {
     await _catalogManager.removeBook(uuid);
-    _setState(_refreshLibrary);
+    _setState(refreshLibrary);
   }
 
   /// Copies the file of the book under [uuid] of type [type] to the temporary directory and shares it
@@ -113,6 +113,23 @@ class LibraryPageActions {
     );
     String? path = selectedFile?.files.firstOrNull?.path;
     return path == null ? null : File(path);
+  }
+
+  /// Copies this object with the given parameters changed
+  LibraryPageActions copyWith({
+    BuildContext? context,
+    Function(void Function())? setState,
+    Function()? refreshLibrary,
+    Function()? incrementLoading,
+    Function()? decrementLoading,
+  }) {
+    return LibraryPageActions(
+      context: context ?? _context,
+      setState: setState ?? _setState,
+      refreshLibrary: refreshLibrary ?? this.refreshLibrary,
+      incrementLoading: incrementLoading ?? _incrementLoading,
+      decrementLoading: decrementLoading ?? _decrementLoading,
+    );
   }
 }
 

@@ -7,6 +7,9 @@ import 'package:cayread/file_structure/file_provider.dart';
 import 'package:cayread/importer/importer.dart';
 import 'package:cayread/injection/injection.dart';
 import 'package:cayread/logging/logger.dart';
+import 'package:fuzzywuzzy/algorithms/weighted_ratio.dart';
+import 'package:fuzzywuzzy/fuzzywuzzy.dart' as fuzzy_lib;
+import 'package:fuzzywuzzy/model/extracted_result.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mime/mime.dart' as mime_lib;
 import 'package:sqlite_async/sqlite3.dart';
@@ -85,6 +88,22 @@ class CatalogManager {
       );
     }).toList();
     return books;
+  }
+
+  /// Finds and orders books matching [query]
+  Future<List<Book>> findBooks(String query) async {
+    if (query.isEmpty) return [];
+
+    List<Book> books = await getBooks();
+    List<ExtractedResult<Book>> orderedBooks = fuzzy_lib.extractAllSorted(
+      query: query,
+      choices: books,
+      ratio: const WeightedRatio(),
+      getter: (Book book) => "${book.title}; ${book.authors.join("; ")}",
+      cutoff: 50,
+    );
+
+    return orderedBooks.map((ExtractedResult<Book> extractedResult) => extractedResult.choice).toList();
   }
 
   /// Closes the catalog database

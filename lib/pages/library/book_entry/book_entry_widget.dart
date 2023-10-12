@@ -91,6 +91,7 @@ class BookEntryWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => _openReader(context),
+      onLongPress: () => _openMenu(context),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12.0),
         child: Row(children: [

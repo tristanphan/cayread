@@ -34,10 +34,13 @@ class EpubProcessor {
         .firstOrNull
         ?.value;
 
-    _log.assertThat(coverItem != null, errorMessage: "Cover not found in manifest");
-    _log.assertThat(_supportedImageMimeTypes.contains(coverItem?.mediaType.toLowerCase()),
-        errorMessage: "Cover has unsupported mimetype ${coverItem?.mediaType}");
-    File cover = File("$manifestItemParent${coverItem?.href}");
+    if (coverItem == null) {
+      _log.warn("Cover not found in manifest");
+      return;
+    }
+    _log.assertThat(_supportedImageMimeTypes.contains(coverItem.mediaType.toLowerCase()),
+        errorMessage: "Cover has unsupported mimetype ${coverItem.mediaType}");
+    File cover = File("$manifestItemParent${coverItem.href}");
     await _copyAsPng(book, cover);
   }
 

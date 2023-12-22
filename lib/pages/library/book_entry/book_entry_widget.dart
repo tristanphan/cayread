@@ -3,6 +3,7 @@ import 'package:cayread/common_widgets/modal_bottom_sheet/modal_bottom_sheet_str
 import 'package:cayread/pages/library/book_entry/book_image_widget.dart';
 import 'package:cayread/pages/library/library_page_actions.dart';
 import 'package:cayread/common_widgets/modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:cayread/pages/reader/reader_page.dart';
 import 'package:flutter/material.dart';
 
 class BookEntryWidget extends StatelessWidget {
@@ -16,7 +17,14 @@ class BookEntryWidget extends StatelessWidget {
   });
 
   void _openReader(BuildContext context) {
-    // TODO open reader
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (BuildContext context) {
+          return ReaderPage(book: displayableBook);
+        },
+      ),
+    );
   }
 
   void _openMenu(BuildContext context) {

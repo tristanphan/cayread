@@ -67,6 +67,19 @@ class FileProvider {
     }
   }
 
+  /// Returns the entry point the book identified by [uuid], which is inside the book directory
+  Future<File> getBookEntrypointFile(String uuid, BookType type) async {
+    Directory bookDir = await getBookDirectory(uuid);
+
+    switch (type) {
+      case BookType.epub:
+        // .../$uuid/index.html
+        return File("${bookDir.path}index.html");
+      default:
+        throw UnimplementedError("Book type $type not implemented");
+    }
+  }
+
   /// Returns the cover image of the book identified by [uuid], which is inside the book directory
   Future<File> getBookCoverImageFile(String uuid) async {
     // $library/$uuid/cover.png

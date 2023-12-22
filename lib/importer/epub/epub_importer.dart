@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:archive/archive_io.dart';
 import 'package:cayread/book_structures.dart';
+import 'package:cayread/file_structure/file_provider.dart';
 import 'package:cayread/importer/epub/parser/epub_structures.dart';
 import 'package:cayread/importer/epub/epub_file_provider.dart';
 import 'package:cayread/importer/epub/parser/epub_parser.dart';
@@ -21,6 +22,7 @@ class EpubImporter implements IImporter {
   final Uuid _uuid = serviceLocator();
   final EpubFileProvider _epubFileProvider = serviceLocator();
   final EpubProcessor _epubProcessor = serviceLocator();
+  final FileProvider _fileProvider = serviceLocator();
 
   /// Extracts [sourceFile] (EPUB file) into a temp directory, processes it, and returns the [Book] object
   @override
@@ -31,7 +33,7 @@ class EpubImporter implements IImporter {
     // Extract
     final String bookId = _uuid.v4();
     _log.info("Using ID: $bookId");
-    await sourceFile.copy(await _epubFileProvider.getOriginalEpubFilePath(bookId));
+    await sourceFile.copy((await _fileProvider.getOriginalFilePath(bookId, BookType.epub)).path);
     final File zipFile = await sourceFile.copy(await _epubFileProvider.getZipFilePath(bookId));
     await extractFileToDisk(zipFile.path, (await _epubFileProvider.getContentDirectory(bookId)).path);
     unawaited(zipFile.delete());

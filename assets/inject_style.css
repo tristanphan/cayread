@@ -25,8 +25,8 @@
     /* CROSS AXIS: the direction text flows after a line break */
 
     /* Do NOT include units, but treat them as percentage of screen (x2) */
-    --ereader-main-padding: 8;
-    --ereader-cross-padding: 10;
+    --ereader-main-padding: 10;
+    --ereader-cross-padding: 8;
 
     /* NOTE: properties that start with "--ereader-prop" are dependent on other properties and should not changed */
 }
@@ -60,7 +60,6 @@ html {
     column-count: 1 !important;
     column-gap: 0 !important;
     column-width: var(--ereader-main-size) !important; /* required for safari */
-    touch-action: none !important; /* prevents touchscreen dragging */
     width: 100vw !important;
 
     /* keeps the padding within bounds */
@@ -68,6 +67,10 @@ html {
     box-sizing: border-box !important;
     padding: var(--ereader-prop-padding) !important; /* vertical padding */
     margin: 0 !important;
+
+    /* disable scrolling */
+    overflow: hidden !important;
+    touch-action: none !important; /* prevents touchscreen dragging */
 }
 
 body {

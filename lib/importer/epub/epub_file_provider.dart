@@ -24,16 +24,6 @@ class EpubFileProvider {
     return zipPath;
   }
 
-  /// Returns the path to the EPUB file of the book under [uuid]
-  /// This file is kept in case the user wants it back, or in case we need to recreate the book
-  Future<String> getOriginalEpubFilePath(String uuid) async {
-    // .../$uuid/original.epub
-    Directory bookDir = await fileProvider.getBookDirectory(uuid);
-    String epubPath = "${bookDir.path}original.epub";
-    log.info("Epub path: $epubPath");
-    return epubPath;
-  }
-
   /// Returns the path to the directory containing the extracted EPUB contents of the book under [uuid]
   Future<Directory> getContentDirectory(String uuid) async {
     // .../$uuid/contents/

@@ -14,50 +14,41 @@ class ControllerWidget extends StatefulWidget {
 }
 
 class _ControllerWidgetState extends State<ControllerWidget> {
-  Widget get leftPageHitBox => Positioned(
+  static const double pageTurnHitBoxWidth = 80;
+
+  Widget createLeftPageHitBox() => Positioned(
         left: 0,
         top: 0,
         bottom: 0,
         child: GestureDetector(
           onTap: () => widget.bookOrchestrator.dispatchAction(BookUIOrchestratorAction.leftPage),
           behavior: HitTestBehavior.translucent,
-          child: IgnorePointer(child: Container(width: 80)),
+          child: IgnorePointer(child: Container(width: pageTurnHitBoxWidth)),
         ),
       );
 
-  Widget get rightPageHitBox => Positioned(
+  Widget createRightPageHitBox() => Positioned(
         right: 0,
         top: 0,
         bottom: 0,
         child: GestureDetector(
           onTap: () => widget.bookOrchestrator.dispatchAction(BookUIOrchestratorAction.rightPage),
           behavior: HitTestBehavior.translucent,
-          child: IgnorePointer(child: Container(width: 80)),
+          child: IgnorePointer(child: Container(width: pageTurnHitBoxWidth)),
         ),
       );
 
-  Widget createExitButton(context) => Positioned(
-        top: 12,
-        right: 12,
-        child: SafeArea(
-          child: Material(
-            child: InkWell(
-              customBorder: const CircleBorder(),
-              onTap: Navigator.of(context).pop,
-              child: Container(
-                padding: const EdgeInsets.all(2),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.grey.withOpacity(0.25),
-                ),
-                child: Icon(
-                  Icons.close_rounded,
-                  size: 24,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-              ),
-            ),
-          ),
+  Widget createToggleMenuHitBox() => Positioned(
+        right: pageTurnHitBoxWidth,
+        left: pageTurnHitBoxWidth,
+        top: 0,
+        bottom: 0,
+        child: GestureDetector(
+          onTap: () => widget.bookOrchestrator.dispatchStateAction(BookUIOrchestratorStateAction.setMenuVisibility,
+              !widget.bookOrchestrator.retrieveState(BookUIOrchestratorStateAction.setMenuVisibility)),
+          onLongPress: null,
+          behavior: HitTestBehavior.translucent,
+          child: IgnorePointer(child: Container(width: pageTurnHitBoxWidth)),
         ),
       );
 
@@ -66,10 +57,10 @@ class _ControllerWidgetState extends State<ControllerWidget> {
     return Stack(
       alignment: Alignment.center,
       children: [
-        leftPageHitBox,
-        rightPageHitBox,
+        createLeftPageHitBox(),
+        createRightPageHitBox(),
+        createToggleMenuHitBox(),
         // TODO disable page switching gesture detectors during a text selection
-        createExitButton(context),
       ],
     );
   }

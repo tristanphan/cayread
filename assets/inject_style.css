@@ -31,7 +31,7 @@
     /* NOTE: properties that start with "--ereader-prop" are dependent on other properties and should not changed */
 }
 
-:root:not([ereader__is_vertical]) {
+:root:not([data-ereader__is_vertical]) {
     --ereader-prop-padding: calc(var(--ereader-cross-padding) * 1vh) 0; /* vertical, then horizontal */
 
     --ereader-prop-width: calc(100% - 2vw * var(--ereader-main-padding));
@@ -43,7 +43,7 @@
     --ereader-main-size: 100vw;
 }
 
-:root[ereader__is_vertical] {
+:root[data-ereader__is_vertical] {
     --ereader-prop-padding: 0 calc(var(--ereader-cross-padding) * 1vw); /* vertical, then horizontal */
 
     --ereader-prop-width: null;
@@ -60,6 +60,7 @@ html {
     column-count: 1 !important;
     column-gap: 0 !important;
     column-width: var(--ereader-main-size) !important; /* required for safari */
+    column-fill: auto; /* fill columns sequentially */
     width: 100vw !important;
 
     /* keeps the padding within bounds */

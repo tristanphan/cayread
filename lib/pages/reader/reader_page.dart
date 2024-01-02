@@ -1,6 +1,7 @@
 import 'package:cayread/book_structures.dart';
 import 'package:cayread/pages/reader/book_ui_orchestrator.dart';
 import 'package:cayread/pages/reader/controller_widget.dart';
+import 'package:cayread/pages/reader/menu_widget.dart';
 import 'package:cayread/pages/reader/renderer_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -30,6 +31,7 @@ class _ReaderPageState extends State<ReaderPage> {
           children: [
             EpubRendererWidget(bookOrchestrator: _bookOrchestrator, book: widget.book),
             ControllerWidget(bookOrchestrator: _bookOrchestrator),
+            MenuWidget(bookOrchestrator: _bookOrchestrator),
           ],
         ),
       ),

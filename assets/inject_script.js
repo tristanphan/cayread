@@ -535,3 +535,9 @@ setMetaViewport();
 setDirection();
 setListeners();
 addWebFontLoaderScript(setFonts);
+
+// TODO implement RTL and vertical text
+//  - fix direction detection (could move setDirection and more into onLoad)
+//  - differentiate between vertical-lr and vertical-rl
+//  - adapt where books switch between vertical-* text and horizontal-tb images,
+//      which means the control directions switch when the user encounters an image

@@ -32,13 +32,25 @@ class _EpubRendererWidgetState extends State<EpubRendererWidget> {
 
   @override
   void initState() {
+    super.initState();
     urlFuture = fileProvider
         .getBookEntrypointFile(
           widget.book.uuid,
           widget.book.type,
         )
         .then((File file) => file.uri);
-    super.initState();
+    widget.bookOrchestrator.dispatchStateAction(
+      BookUIOrchestratorStateAction.setTitle,
+      widget.book.title,
+    );
+    widget.bookOrchestrator.dispatchStateAction(
+      BookUIOrchestratorStateAction.setPageCount,
+      widget.book.length,
+    );
+    widget.bookOrchestrator.dispatchStateAction(
+      BookUIOrchestratorStateAction.updateLocationNumber,
+      widget.book.current,
+    );
   }
 
   void onCreated(InAppWebViewController controller) {
@@ -69,6 +81,7 @@ class _EpubRendererWidgetState extends State<EpubRendererWidget> {
         log.info("Reached right boundary");
       default:
         log.info("Moved to location $location");
+        widget.bookOrchestrator.dispatchStateAction(BookUIOrchestratorStateAction.updateLocationNumber, location);
     }
   }
 

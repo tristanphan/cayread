@@ -15,7 +15,12 @@ class BookListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (books.isEmpty) return const _BookListEmptyWidget();
+    if (books.isEmpty) {
+      return _BookListEmptyWidget(
+        libraryPageActions: libraryPageActions,
+      );
+    }
+
     return ListView.builder(
       physics: const NeverScrollableScrollPhysics(),
       scrollDirection: Axis.vertical,
@@ -33,10 +38,41 @@ class BookListWidget extends StatelessWidget {
 }
 
 class _BookListEmptyWidget extends StatelessWidget {
-  const _BookListEmptyWidget();
+  final LibraryPageActions libraryPageActions;
+
+  const _BookListEmptyWidget({required this.libraryPageActions});
 
   @override
   Widget build(BuildContext context) {
-    return const Text("No books yet");
+    return SizedBox(
+      height: 400,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.12),
+              borderRadius: BorderRadius.circular(100),
+            ),
+            padding: const EdgeInsets.all(16),
+            child: const Icon(
+              Icons.auto_stories,
+              size: 48,
+            ),
+          ),
+          const Padding(padding: EdgeInsets.only(bottom: 8)),
+          Text(
+            "Your library is empty",
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          const Padding(padding: EdgeInsets.only(bottom: 24)),
+          ElevatedButton.icon(
+            onPressed: libraryPageActions.importBookAction,
+            icon: const Icon(Icons.add),
+            label: const Text("Get Started"),
+          ),
+        ],
+      ),
+    );
   }
 }

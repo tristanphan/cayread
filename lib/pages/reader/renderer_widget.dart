@@ -91,7 +91,7 @@ class _EpubRendererWidgetState extends State<EpubRendererWidget> {
       future: urlFuture,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return const Center(child: Text("Not done"));
+          return const Center(child: Text("Loading..."));
         }
         Uri url = snapshot.data!;
         return SafeArea(

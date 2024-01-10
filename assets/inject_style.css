@@ -1,3 +1,8 @@
+/*
+    TODO: disable when font support is fixed
+    Issue: font loading requires internet access, and requests are blocked because
+      WebFontLoader uses HTTP rather than the required HTTPS
+*/
 @import url('https://fonts.googleapis.com/css?family=Libre+Baskerville&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Bitter&display=swap');
@@ -12,9 +17,9 @@
 
 :root {
     /* no spaces to simplify URI encoding */
-    --ereader-fonts: "Libre Baskerville","Roboto","Noto Sans JP","Noto Sans TC","Noto Sans SC","Noto Sans KR",sans-serif,sans-serif;
+    --ereader-fonts: "Libre Baskerville","Roboto","Noto Sans JP","Noto Sans TC","Noto Sans SC","Noto Sans KR",serif,sans-serif;
 
-    --ereader-scale: 100%;
+    --ereader-scale: 1;
     --ereader-line-height: 1.61803398875em;
 
     --ereader-background-color: #FFFFFF; /* brown is 332B2D */

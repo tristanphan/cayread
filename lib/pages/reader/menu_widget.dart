@@ -20,6 +20,7 @@ class _MenuWidgetState extends State<MenuWidget> {
   static const int transitionDuration = 300;
 
   Widget createExitButton(context) => Material(
+        shape: const CircleBorder(),
         child: InkWell(
           customBorder: const CircleBorder(),
           onTap: Navigator.of(context).pop,
@@ -39,6 +40,7 @@ class _MenuWidgetState extends State<MenuWidget> {
       );
 
   Widget createMoreButton(context) => Material(
+        shape: const CircleBorder(),
         child: InkWell(
           customBorder: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           onTap: () {

@@ -208,7 +208,6 @@ class EReaderParameter {
         console.debug(`[ereader.parameter.syncWithCSS] Syncing parameter ${paramName} with ${cssName}`);
         if (parameters.has(paramName)) {
             console.debug(`[ereader.parameter.syncWithCSS] Parameter found, copying into CSS`);
-            console.warn(`${parameters.get(paramName)}`)
             document.documentElement.style.setProperty(cssName, decodeURIComponent(parameters.get(paramName)));
         } else {
             console.debug(`[ereader.parameter.syncWithCSS] Parameter not found, copying from CSS`);
@@ -337,8 +336,6 @@ class EReader {
     elementVisible(element) {
         if (getComputedStyle(element).display === "none" ||
             getComputedStyle(element).visibility === "hidden") {
-            console.debug(`[ereader.elementVisible] The following element is not visible:`);
-            console.debug(element);
             return false;
         }
         let position = element.getBoundingClientRect();
@@ -346,8 +343,6 @@ class EReader {
             position.bottom <= window.innerHeight &&
             position.left >= 0 &&
             position.right <= window.innerWidth);
-        console.debug(`[ereader.elementVisible] The following element is ` + (visible ? '' : 'not ') + `visible:`);
-        console.debug(element);
         return visible;
     }
 
@@ -479,9 +474,10 @@ function setFonts() {
         document.documentElement.style.setProperty("--ereader-fonts", fonts);
         for (let font of fonts.split(",")) {
             font = font.trim().replace(/['"]+/g, '');
-            console.debug(`[setFont] Attempting to add font ${font}`);
-            if (!document.fonts.check(`0 ${font}`)) {
-                console.debug(`[setFont] Font not found, adding from WebFont loader using Google Fonts: ${font}`);
+            if (doesFontExist(font)) {
+                console.debug(`[setFont] Font ${font} exists`)
+            } else {
+                console.debug(`[setFont] Font ${font} not found, adding from WebFont loader using Google Fonts: ${font}`);
                 WebFont.load({
                     google: {families: [font]},
                     fontinactive: () => {
@@ -495,6 +491,27 @@ function setFonts() {
         parameters.set("fonts", encodeURIComponent(window.getComputedStyle(document.documentElement).getPropertyValue("--ereader-fonts")));
         ereader.parameter.set(parameters);
     }
+}
+
+/**
+ * Checks if the specified font exists in the system
+ * @param {string} fontName - The name of the font to check
+ * @returns {boolean} Whether the font exists
+ */
+function doesFontExist(fontName) {
+    let text = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    let canvas = document.createElement("canvas");
+    let context = canvas.getContext("2d");
+
+    // Test monospace
+    context.font = "144px monospace";
+    let monospaceWidth = context.measureText(text).width;
+
+    // Test font
+    context.font = `144px ${fontName}, monospace`;
+    let fontWidth = context.measureText(text).width;
+
+    return fontWidth !== monospaceWidth;
 }
 
 /**
